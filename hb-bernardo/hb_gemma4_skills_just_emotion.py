@@ -2,12 +2,13 @@ import requests
 from transformers import pipeline
 from deep_translator import GoogleTranslator
 from concurrent.futures import ThreadPoolExecutor
+import trafilatura
 
 # -----------------------------
 # CONFIG
 # -----------------------------
 OLLAMA_URL = "http://localhost:11434/api/generate"
-MODEL_NAME = "llama3"
+MODEL_NAME = "gemma4"
 
 # -----------------------------
 # SENTIMENT
@@ -88,6 +89,18 @@ def emotion_to_natural(e):
     }.get(e, e)
 
 
+
+def scrape_website(url):
+    """Entra num site, extrai o texto limpo e ignora o lixo (anúncios/menus)."""
+    print(f"📄 A ler conteúdo detalhado em: {url}...")
+    try:
+        # O trafilatura já usa user-agents internos para evitar bloqueios simples
+        downloaded = trafilatura.fetch_url(url)
+        # Extrai apenas o texto principal do artigo
+        content = trafilatura.extract(downloaded, include_comments=False, include_tables=True)
+        return content[:3000] # Limitamos a 3000 caracteres para não estourar a VRAM da GPU
+    except:
+        return "Não consegui ler o conteúdo deste site."
 # -----------------------------
 # CHAT LOOP
 # -----------------------------
@@ -113,7 +126,7 @@ def chat():
 
             print(f"""
 Resposta:
-(thinking: o utilizador está {estado}, o modelo sentiu: {emotion})
+(thinking: o utilizador está {estado})
 
 {response}
 """)

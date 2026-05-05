@@ -1,0 +1,26 @@
+# FastAPI & Server
+fastapi==0.115.12
+uvicorn[standard]==0.34.2
+python-multipart==0.0.20
+aiofiles==24.1.0
+
+# Ollama Client
+ollama==0.4.8
+
+# Speech-to-Text
+faster-whisper==1.1.1
+
+# Text-to-Speech
+edge-tts==7.2.8
+
+# Web Search
+duckduckgo-search==7.5.3
+
+# Utilities
+websockets==15.0.1
+requests==2.32.5
+
+# Emotion Analysis
+transformers>=4.35.0
+deep-translator>=1.11.4
+torch>=2.0.0
